@@ -15,24 +15,20 @@ public class FindWithOneRoot implements MenuInterface {
     @Override
     public void execute() {
         List<Calculate> allEquations = Dao.getAll();
-        List<Calculate> oneRoot = new ArrayList<>();
 
-        if(allEquations==null) {
+        if (allEquations == null)
             return;
-        }
 
-        for(Calculate el : allEquations)
-        {
-            if(!(el.getRoots().getVariablesMap()==null) &&
-                    el.getRoots().getVariablesMap().values().size()==1)
-            {
-                    oneRoot.add(el);
+        List<Calculate> oneRoot = new ArrayList<>();
+        for (Calculate el : allEquations) {
+            if (el.getRoots().getVariablesMap() != null &&
+                    el.getRoots().getVariablesMap().values().size() == 1) {
+                oneRoot.add(el);
             }
         }
 
         if (!oneRoot.isEmpty()) {
             System.out.printf("\n%-15s    %s\n", "Equation", "roots");
-
             for (Calculate el : oneRoot)
                 System.out.printf(el.toString());
         }

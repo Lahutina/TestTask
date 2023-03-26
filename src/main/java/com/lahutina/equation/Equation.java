@@ -8,25 +8,36 @@ import java.util.Stack;
  * one part of equation
  */
 public class Equation {
-    /** One part of equation to calculate*/
+    // One part of equation to calculate
     private final String strExp;
-
-    /** String divided into elements(numbers, operands etc.)*/
+    // String divided into elements(numbers, operands etc.)
     private ArrayList<String> splitExp;
-    /** Equation parsed to array according to Polish notation */
+    // Equation parsed to array according to Polish notation
     private ArrayList<String> parsedExp;
-    /** Possible values of unknown literal variables*/
-    private Variables variables;
+    // Possible values of unknown literal variables
+    private final Variables variables;
 
     /**
      * Constructor that initializes variables and
      * one part of equation that needs to be calculated
-     * @param strExp initial str of one part of equation
+     *
+     * @param strExp    initial str of one part of equation
      * @param variables variables that can be present
      */
     public Equation(String strExp, Variables variables) {
         this.strExp = strExp;
         this.variables = variables;
+    }
+
+    /**
+     * Checks if a symbol is an operand
+     *
+     * @param expChar Symbol to check
+     * @return Whether a symbol is an operand
+     */
+    public static boolean isOperator(String expChar) {
+        return expChar.equals("^") || expChar.equals("*") ||
+                expChar.equals("/") || expChar.equals("+") || expChar.equals("-");
     }
 
     /**
@@ -36,8 +47,7 @@ public class Equation {
      *
      * @return a number that is the result of a calculation
      */
-    public Double doOperations()
-    {
+    public Double doOperations() {
         splitExp = SplitEquation.split(this.strExp);
         parsedExp = ParseEquation.parse(splitExp);
         return calculate();
@@ -120,17 +130,6 @@ public class Equation {
             }
         }
         return res;
-    }
-
-    /**
-     * Checks if a symbol is an operand
-     *
-     * @param expChar Symbol to check
-     * @return Whether a symbol is an operand
-     */
-    public static boolean isOperator(String expChar) {
-        return expChar.equals("^") || expChar.equals("*") ||
-                expChar.equals("/") || expChar.equals("+") || expChar.equals("-");
     }
 
     /**

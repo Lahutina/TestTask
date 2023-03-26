@@ -10,9 +10,9 @@ public enum ActionPriority {
     PLUS("+", 1),
     MINUS("-", 1);
 
-    /** Notation of the operator */
+    // Notation of the operator
     private final String name;
-    /** Operator priority */
+    // Operator priority
     private final int priority;
 
     ActionPriority(String name, int priority) {
@@ -27,7 +27,7 @@ public enum ActionPriority {
      * @return Operator priority or -1 if the operator with that name does not exist
      */
     public static int getPriority(String actionName) {
-        for (ActionPriority action: ActionPriority.values()) {
+        for (ActionPriority action : ActionPriority.values()) {
             if (action.name.equals(actionName)) {
                 return action.priority;
             }
@@ -42,7 +42,7 @@ public enum ActionPriority {
      * @return Whether there is an operator with that name
      */
     public static boolean contains(String actionName) {
-        for (ActionPriority action: ActionPriority.values()) {
+        for (ActionPriority action : ActionPriority.values()) {
             if (action.name.equals(actionName)) {
                 return true;
             }

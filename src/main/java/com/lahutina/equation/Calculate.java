@@ -12,29 +12,21 @@ import java.util.Objects;
  */
 public class Calculate {
 
-    /**
-     * Possible root values of unknown literal variables
-     */
+    // Possible root values of unknown literal variables
     private final Variables roots;
-    /**
-     * Results of two parts
-     */
+    // Results of two parts
     private final Double[] twoPartsRes = new Double[2];
-    /**
-     * Initial equation
-     */
+    // Initial equation
     private String strExp;
-    /**
-     * Initial equation divided into two strings after "=" and before
-     */
+    // Initial equation divided into two strings after "=" and before
     private String[] twoPartsExp = new String[2];
 
     /**
      * Constructor that assigns initial equation str
      * and possible values of variables
      *
-     * @param strExp    initial string equation
-     * @param roots possible values of letters in equation
+     * @param strExp initial string equation
+     * @param roots  possible values of letters in equation
      */
     public Calculate(String strExp, String roots) {
         this.strExp = strExp;

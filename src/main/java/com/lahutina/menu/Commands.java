@@ -1,6 +1,9 @@
 package com.lahutina.menu;
 
-import com.lahutina.commands.*;
+import com.lahutina.commands.AddEquation;
+import com.lahutina.commands.FindByRootsNumbers;
+import com.lahutina.commands.FindWithOneRoot;
+import com.lahutina.commands.PrintEquations;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

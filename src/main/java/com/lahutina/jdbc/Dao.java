@@ -2,7 +2,10 @@ package com.lahutina.jdbc;
 
 import com.lahutina.equation.Calculate;
 
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,7 +42,6 @@ public class Dao {
      *
      * @return returns class with equation and roots
      */
-
     public static List<Calculate> getAll() {
         try {
             Statement statement = JDBCConnection.getConnection().createStatement();

@@ -9,7 +9,7 @@ import java.util.HashMap;
 public class Variables {
 
     private String strRoots;
-    /** Key - variable name, value - its value */
+    // Key - variable name, value - its value
     private HashMap<String, Double> variables;
 
     /**
@@ -19,15 +19,12 @@ public class Variables {
      * @param strRoots String that contain variables
      */
     public Variables(String strRoots) {
-        this.strRoots = strRoots;
-        if(strRoots!=null)
-        {
+        if (strRoots != null) {
             this.strRoots = strRoots.replaceAll("\\s", "");
             variables = new HashMap<>();
-            if(!strRoots.equals(""))
+            if (!strRoots.equals(""))
                 parseVariables(this.strRoots);
         }
-
     }
 
     /**
@@ -36,7 +33,7 @@ public class Variables {
      * @param roots String that contain variables
      */
     private void parseVariables(String roots) {
-        String[] arrRoots= roots.split(",");
+        String[] arrRoots = roots.split(",");
 
         for (String arrRoot : arrRoots) {
             String[] tmp = arrRoot.split("=");
@@ -48,7 +45,7 @@ public class Variables {
      * Gives the value of a variable
      *
      * @param varName Variable name
-     * @return  The value of a variable
+     * @return The value of a variable
      */
     public Double get(String varName) {
         return variables.get(varName);
@@ -60,7 +57,9 @@ public class Variables {
      * @param varName variable to check if present
      * @return present or no
      */
-    public boolean contains(String varName) { return variables.containsKey(varName); }
+    public boolean contains(String varName) {
+        return variables.containsKey(varName);
+    }
 
     public HashMap<String, Double> getVariablesMap() {
         return variables;

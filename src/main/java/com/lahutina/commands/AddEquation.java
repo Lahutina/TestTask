@@ -5,6 +5,11 @@ import com.lahutina.menu.MenuInterface;
 
 import java.util.Scanner;
 
+/**
+ * Class responsible for reading users input
+ * equation(and variables) perform calculation
+ * on it and save(or not) to DB
+ */
 public class AddEquation implements MenuInterface {
     @Override
     public void execute() {

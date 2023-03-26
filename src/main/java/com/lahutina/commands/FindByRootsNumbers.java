@@ -17,22 +17,20 @@ public class FindByRootsNumbers implements MenuInterface {
     @Override
     public void execute() {
         Scanner input = new Scanner(System.in);
+
         System.out.println("Input number");
         double findNumber = input.nextDouble();
 
         List<Calculate> allEquations = Dao.getAll();
-        List<Calculate> containNumber = new ArrayList<>();
 
-        if(allEquations==null) {
+        if (allEquations == null)
             return;
-        }
 
-        for(Calculate el : allEquations)
-        {
-            if(!(el.getRoots().getVariablesMap()==null))
-            {
-                for(Double number : el.getRoots().getVariablesMap().values())
-                    if(findNumber == number && !containNumber.contains(el))
+        List<Calculate> containNumber = new ArrayList<>();
+        for (Calculate el : allEquations) {
+            if (el.getRoots().getVariablesMap() != null) {
+                for (Double number : el.getRoots().getVariablesMap().values())
+                    if (findNumber == number && !containNumber.contains(el))
                         containNumber.add(el);
             }
         }
