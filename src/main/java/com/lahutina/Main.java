@@ -1,26 +1,28 @@
 package com.lahutina;
 
-import com.lahutina.jdbc.Dao;
-import com.lahutina.jdbc.JDBCConnection;
+import com.lahutina.equation.Calculate;
+import com.lahutina.equation.Equation;
+import com.lahutina.equation.Variables;
 
-import java.sql.SQLException;
+import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) throws SQLException {
-        int choose = 0;
+    public static void main(String[] args)  {
+        Scanner scanner = new Scanner(System.in);
 
-        while(choose!=1 && choose!=2) {
-            choose = Input.inputOptions();
-            if (choose == 1)
-                Input.inputConsole();
-            else if (choose == 2)
-                Input.inputFile();
-        }
+        System.out.println("Enter equation: ");
+        String equation = scanner.nextLine();
 
-        Dao.execQuery();
+        System.out.println("Enter possible roots in form \"x=?, y=?\"");
+        String variables = scanner.nextLine();
 
-        JDBCConnection.closeConnection();
+        Calculate calculate = new Calculate(equation, variables);
+        calculate.doCalculate();
+
+//        Dao.execQuery();
+//
+//        JDBCConnection.closeConnection();
     }
 
 }

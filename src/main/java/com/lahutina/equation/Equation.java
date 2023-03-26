@@ -2,46 +2,158 @@ package com.lahutina.equation;
 
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Equation {
-    String equation;
-    ArrayList<String> roots;
+    private final String strExp;
+    private ArrayList<String> parsedExp;
+    private ArrayList<String> splitExp;
 
-    private Equation() {
+    private Variables variables;
+
+    public Equation(String strExp, Variables variables) {
+        this.variables = variables;
+        this.strExp = strExp;
     }
 
-    public Equation(String equation) {
-        this.equation = parse(equation);
-        if(checkSymbols(equation) && checkParentheses(equation))
-        {
-            //save to bd
-        }
-        else System.err.println("Дужки розставленні не правильно");
+    public Double doOperations()
+    {
+        splitExp = SplitEquation.split(this.strExp);
+        parsedExp = ParseEquation.parse(splitExp);
+        return calculate();
     }
 
-    private String parse(String equation) {
-       return equation.replaceAll("\\s+", "");
-    }
+    /**
+     * Evaluates the value of an
+     * expression using reverse Polish notation
+     *
+     * @return The value of the expression or null if there are errors
+     */
+    private Double calculate() {
 
-    public static boolean checkParentheses(String input) {
-        Stack<Character> stack = new Stack<>();
-        for (char c : input.toCharArray()) {
-            if (c == '(') {
-                stack.push(c);
-            } else if (c == ')') {
-                if (stack.isEmpty()) {
-                    return false;
-                }
-                if ( stack.pop() != '(') {
-                    return false;
-                }
+        Stack<Double> stack = new Stack<>();
+
+        for (String expEl : parsedExp) {
+
+            if (isOperator(expEl)) {
+                calculateIfMeetOperator(stack, expEl);
+            } else if (variables.contains(expEl)) {
+                stack.push(variables.get(expEl));
+            } else if (isStrDouble(expEl)) {
+                stack.push(Double.parseDouble(expEl));
+            } else {
+                printErrorMsg(expEl, variables);
+                return null;
             }
         }
-        return stack.isEmpty();
+        return stack.pop();
     }
 
-    private boolean checkSymbols(String equation) {
-        String regex = "^[\\d\\s+\\-,*/()%=a-zA-Z]*$";
-        return equation.matches(regex);
+    /**
+     * Pops two operands from the stack, performs
+     * an operation on them, and puts the result on the stack.
+     * Іf there is only one element in the stack, and the operator
+     * is a unary plus or minus, then a unary operation is performed
+     * on this operand
+     *
+     * @param stack    Stack of numbers
+     * @param operator Action that must be performed on numbers
+     */
+    private void calculateIfMeetOperator(Stack<Double> stack, String operator) {
+        double var1, var2;
+        if (stack.size() >= 2) {
+            var2 = stack.pop();
+            var1 = stack.pop();
+            stack.push(calculateOp(var1, var2, operator));
+        } else if (stack.size() == 1 && operator.equals("-") || operator.equals("+")) {
+            if (operator.equals("-")) {
+                stack.push(stack.pop() * -1);
+            }
+        } else {
+            System.out.println(strExp);
+            System.out.println("Check the operators");
+            System.exit(0);
+        }
+    }
+
+    /**
+     * Performs an operation on two variables
+     * if division by 0 is performed, it throws an exception
+     *
+     * @param var1     Variable1
+     * @param var2     Variable2
+     * @param operator The operation to be performed
+     * @return The result of the operation
+     */
+    private double calculateOp(double var1, double var2, String operator) {
+        double res = 0.0;
+        switch (operator) {
+            case "^" -> res = Math.pow(var1, var2);
+            case "+" -> res = var1 + var2;
+            case "-" -> res = var1 - var2;
+            case "*" -> res = var1 * var2;
+            case "/" -> {
+                if (var2 == 0.0) {
+                    throw new ArithmeticException("Cannot be divided by 0");
+                }
+                res = var1 / var2;
+            }
+        }
+        return res;
+    }
+
+    /**
+     * Checks if a symbol is an operand
+     *
+     * @param expChar Symbol to check
+     * @return Whether a symbol is an operand
+     */
+    public static boolean isOperator(String expChar) {
+        return expChar.equals("^") || expChar.equals("*") ||
+                expChar.equals("/") || expChar.equals("+") || expChar.equals("-");
+    }
+
+    /**
+     * Checks whether the operand
+     * can be parsed into a double number
+     *
+     * @param operand operand to check
+     * @return Whether the operand can be of type double
+     */
+    private boolean isStrDouble(String operand) {
+        try {
+            Double.parseDouble(operand);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Displays information about the parcel,
+     * highlighting the error messages in red in the expression
+     *
+     * @param error     place with error
+     * @param variables Variables
+     */
+    private void printErrorMsg(String error, Variables variables) {
+        /* Red color code to highlight the wrong place in the formula */
+        final String ANSI_RED = "\u001B[31m";
+        final String ANSI_RESET = "\u001B[0m";
+
+        System.out.println("An error in the expression:");
+        for (String expEl : splitExp) {
+            if (expEl.equals(error)) {
+                System.out.print(ANSI_RED + expEl + ANSI_RESET);
+            } else {
+                System.out.print(expEl);
+            }
+        }
+    }
+
+    @Override
+    public String toString() {
+        return strExp;
     }
 }
