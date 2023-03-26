@@ -1,5 +1,8 @@
 package com.lahutina.equation;
 
+import com.lahutina.jdbc.Dao;
+
+import java.sql.SQLException;
 import java.util.Objects;
 
 /**
@@ -9,23 +12,31 @@ import java.util.Objects;
  */
 public class Calculate {
 
-    /** Initial equation*/
-    private String strExp;
-    /** Possible values of unknown literal variables*/
+    /**
+     * Possible values of unknown literal variables
+     */
     private final Variables variables;
-    /** Initial equation divided into two strings after "=" and before */
-    private String[] twoPartsExp = new String[2];
-    /** Results of two parts*/
+    /**
+     * Results of two parts
+     */
     private final Double[] twoPartsRes = new Double[2];
+    /**
+     * Initial equation
+     */
+    private String strExp;
+    /**
+     * Initial equation divided into two strings after "=" and before
+     */
+    private String[] twoPartsExp = new String[2];
 
     /**
      * Constructor that assigns initial equation str
      * and possible values of variables
      *
-     * @param strExp initial string equation
+     * @param strExp    initial string equation
      * @param variables possible values of letters in equation
      */
-    public Calculate(String strExp,  String variables) {
+    public Calculate(String strExp, String variables) {
         this.strExp = strExp;
         this.variables = new Variables(variables);
     }
@@ -33,8 +44,8 @@ public class Calculate {
     /**
      * Removes all white spaces
      * splits one equation to two: after and before "="
-     * calculates values of two parts
-     * and compares the results
+     * calculates values of two parts,
+     * compares the results and saves(or not) to the database
      */
     public void doCalculate() {
         this.strExp = strExp.replaceAll(" ", "");
@@ -46,18 +57,46 @@ public class Calculate {
         Equation secondPart = new Equation(twoPartsExp[1], variables);
         twoPartsRes[1] = secondPart.doOperations();
 
-        if(Objects.equals(twoPartsRes[0], twoPartsRes[1]))
-        {
-            // TODO
-            System.out.println("Here I should save equation and roots to DB " +
-                    "or if variables==null only equation");
-        }
-        else {
-            // TODO
-            System.out.println("Here if there are no variables do not save equation " +
-                    "if there are variables just save equation because variables not correct");
+        saveToDB();
+    }
 
-            System.out.println("\nTwo parts are not equal: " + twoPartsRes[0] + " and " + twoPartsRes[1]);
+    /**
+     * Saves equation (and variables) to the database
+     */
+    private void saveToDB() {
+        if (Objects.equals(twoPartsRes[0], twoPartsRes[1])) {
+            try {
+                if (!variables.toString().equals("")) {
+                    Dao.insertEquationAndRoots(this);
+                    System.out.println("Equation and variables are correct, was saved to database");
+                } else {
+                    Dao.insertEquation(this);
+                    System.out.println("Equation is correct, was saved to database");
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            try {
+                if (!variables.toString().equals("")) {
+                    System.out.println("Equation is correct, but variables are not, was saved only equation to database");
+                    Dao.insertEquation(this);
+                } else {
+                    System.out.println("Equation is not correct, was not saved to database");
+                }
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("Two parts are not equal: " + twoPartsRes[0] + " and " + twoPartsRes[1]);
         }
+    }
+
+    //getters
+    public String getStrExp() {
+        return strExp;
+    }
+
+    public Variables getVariables() {
+        return variables;
     }
 }

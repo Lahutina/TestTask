@@ -1,12 +1,15 @@
 package com.lahutina.equation;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A class that contains the name
  * of the variables and their value
  */
 public class Variables {
+
+    private final String roots;
     /** Key - variable name, value - its value */
     private final HashMap<String, Double> variables;
 
@@ -17,6 +20,7 @@ public class Variables {
      * @param roots String that contain variables
      */
     public Variables(String roots) {
+        this.roots = roots.replaceAll(" ", "");
         variables = new HashMap<>();
         if(!roots.equals(""))
             parseVariables(roots);
@@ -28,7 +32,6 @@ public class Variables {
      * @param roots String that contain variables
      */
     private void parseVariables(String roots) {
-        roots = roots.replaceAll(" ", "");
         String[] arrRoots= roots.split(",");
 
         for (String arrRoot : arrRoots) {
@@ -55,4 +58,8 @@ public class Variables {
      */
     public boolean contains(String varName) { return variables.containsKey(varName); }
 
+    @Override
+    public String toString() {
+        return roots;
+    }
 }
