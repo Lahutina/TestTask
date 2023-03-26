@@ -2,21 +2,40 @@ package com.lahutina.equation;
 
 import java.util.ArrayList;
 import java.util.Stack;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
+/**
+ * Class that is responsible for calculation of
+ * one part of equation
+ */
 public class Equation {
+    /** One part of equation to calculate*/
     private final String strExp;
-    private ArrayList<String> parsedExp;
-    private ArrayList<String> splitExp;
 
+    /** String divided into elements(numbers, operands etc.)*/
+    private ArrayList<String> splitExp;
+    /** Equation parsed to array according to Polish notation */
+    private ArrayList<String> parsedExp;
+    /** Possible values of unknown literal variables*/
     private Variables variables;
 
+    /**
+     * Constructor that initializes variables and
+     * one part of equation that needs to be calculated
+     * @param strExp initial str of one part of equation
+     * @param variables variables that can be present
+     */
     public Equation(String strExp, Variables variables) {
-        this.variables = variables;
         this.strExp = strExp;
+        this.variables = variables;
     }
 
+    /**
+     * Splits equation into elements(numbers, operands etc.),
+     * parses to array according to Polish notation,
+     * calculates equation and returns result
+     *
+     * @return a number that is the result of a calculation
+     */
     public Double doOperations()
     {
         splitExp = SplitEquation.split(this.strExp);

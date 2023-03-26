@@ -25,6 +25,5 @@ public class JDBCConnection {
             instance.close();
             instance = null;
         }
-
     }
 }

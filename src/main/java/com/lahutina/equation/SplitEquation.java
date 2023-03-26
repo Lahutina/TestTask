@@ -2,11 +2,15 @@ package com.lahutina.equation;
 
 import java.util.ArrayList;
 
+/**
+ * Class that splits equation(String)
+ * into ArrayList<String> of
+ * elements(numbers, letters, operands etc.)
+ */
 public class SplitEquation {
 
     /**
-     * Breaks an expression into
-     * parentheses, operands, and operators
+     * Breaks an expression into elements
      *
      * @return Array of elements of expression
      */
@@ -25,7 +29,7 @@ public class SplitEquation {
             currChar = String.valueOf(strExp.charAt(i));
             prevChar = String.valueOf(strExp.charAt(i - 1));
 
-            /* if the current symbol is unary operator,
+            /* If the current symbol is unary operator,
              * and before this symbol not parenthesis or other symbol,
              * then the formed operand is added to the
              * list, and current operator/parenthesis is entered in the list
@@ -75,6 +79,4 @@ public class SplitEquation {
     private static boolean isParenthesis(String expChar) {
         return expChar.equals("(") || expChar.equals(")");
     }
-
-
 }

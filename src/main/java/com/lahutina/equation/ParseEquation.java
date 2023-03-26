@@ -1,10 +1,13 @@
 package com.lahutina.equation;
 
-import com.lahutina.actions.priority.ActionPriority;
-
 import java.util.ArrayList;
 import java.util.Stack;
 
+/**
+ * Class that parses array of equation elements
+ * into array with correct order(according to reverse Polish
+ * notation)
+ */
 public class ParseEquation {
 
     /**

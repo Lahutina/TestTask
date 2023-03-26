@@ -1,4 +1,4 @@
-package com.lahutina.actions.priority;
+package com.lahutina.equation;
 
 /**
  * Priority of operators

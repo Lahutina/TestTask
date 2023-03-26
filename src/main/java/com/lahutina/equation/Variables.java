@@ -18,7 +18,8 @@ public class Variables {
      */
     public Variables(String roots) {
         variables = new HashMap<>();
-        parseVariables(roots);
+        if(!roots.equals(""))
+            parseVariables(roots);
     }
 
     /**
@@ -46,14 +47,12 @@ public class Variables {
         return variables.get(varName);
     }
 
+    /**
+     * Checks if this name of variable is in list
+     *
+     * @param varName variable to check if present
+     * @return present or no
+     */
     public boolean contains(String varName) { return variables.containsKey(varName); }
 
-    /**
-     * Displays the names of all variables and their values
-     */
-    public void printVariables() {
-        for (String varName : variables.keySet()) {
-            System.out.println(varName + " = " + variables.get(varName));
-        }
-    }
 }
