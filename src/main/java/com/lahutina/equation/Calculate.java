@@ -13,9 +13,9 @@ import java.util.Objects;
 public class Calculate {
 
     /**
-     * Possible values of unknown literal variables
+     * Possible root values of unknown literal variables
      */
-    private final Variables variables;
+    private final Variables roots;
     /**
      * Results of two parts
      */
@@ -34,11 +34,11 @@ public class Calculate {
      * and possible values of variables
      *
      * @param strExp    initial string equation
-     * @param variables possible values of letters in equation
+     * @param roots possible values of letters in equation
      */
-    public Calculate(String strExp, String variables) {
+    public Calculate(String strExp, String roots) {
         this.strExp = strExp;
-        this.variables = new Variables(variables);
+        this.roots = new Variables(roots);
     }
 
     /**
@@ -51,10 +51,10 @@ public class Calculate {
         this.strExp = strExp.replaceAll(" ", "");
         twoPartsExp = strExp.split("=");
 
-        Equation firstPart = new Equation(twoPartsExp[0], variables);
+        Equation firstPart = new Equation(twoPartsExp[0], roots);
         twoPartsRes[0] = firstPart.doOperations();
 
-        Equation secondPart = new Equation(twoPartsExp[1], variables);
+        Equation secondPart = new Equation(twoPartsExp[1], roots);
         twoPartsRes[1] = secondPart.doOperations();
 
         saveToDB();
@@ -66,7 +66,7 @@ public class Calculate {
     private void saveToDB() {
         if (Objects.equals(twoPartsRes[0], twoPartsRes[1])) {
             try {
-                if (!variables.toString().equals("")) {
+                if (!roots.toString().equals("")) {
                     Dao.insertEquationAndRoots(this);
                     System.out.println("Equation and variables are correct, was saved to database");
                 } else {
@@ -78,7 +78,7 @@ public class Calculate {
             }
         } else {
             try {
-                if (!variables.toString().equals("")) {
+                if (!roots.toString().equals("")) {
                     System.out.println("Equation is correct, but variables are not, was saved only equation to database");
                     Dao.insertEquation(this);
                 } else {
@@ -96,7 +96,12 @@ public class Calculate {
         return strExp;
     }
 
-    public Variables getVariables() {
-        return variables;
+    public Variables getRoots() {
+        return roots;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%-15s  |  %s\n", strExp, roots);
     }
 }

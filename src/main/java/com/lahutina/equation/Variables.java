@@ -1,7 +1,6 @@
 package com.lahutina.equation;
 
 import java.util.HashMap;
-import java.util.Map;
 
 /**
  * A class that contains the name
@@ -9,21 +8,26 @@ import java.util.Map;
  */
 public class Variables {
 
-    private final String roots;
+    private String strRoots;
     /** Key - variable name, value - its value */
-    private final HashMap<String, Double> variables;
+    private HashMap<String, Double> variables;
 
     /**
      * A constructor that initializes the HashMap and
      * parses the variables and puts them into a HashMap
      *
-     * @param roots String that contain variables
+     * @param strRoots String that contain variables
      */
-    public Variables(String roots) {
-        this.roots = roots.replaceAll(" ", "");
-        variables = new HashMap<>();
-        if(!roots.equals(""))
-            parseVariables(roots);
+    public Variables(String strRoots) {
+        this.strRoots = strRoots;
+        if(strRoots!=null)
+        {
+            this.strRoots = strRoots.replaceAll("\\s", "");
+            variables = new HashMap<>();
+            if(!strRoots.equals(""))
+                parseVariables(this.strRoots);
+        }
+
     }
 
     /**
@@ -58,8 +62,12 @@ public class Variables {
      */
     public boolean contains(String varName) { return variables.containsKey(varName); }
 
+    public HashMap<String, Double> getVariablesMap() {
+        return variables;
+    }
+
     @Override
     public String toString() {
-        return roots;
+        return strRoots;
     }
 }

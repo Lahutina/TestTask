@@ -63,7 +63,7 @@ public class Equation {
                 stack.push(Double.parseDouble(expEl));
             } else {
                 printErrorMsg(expEl, variables);
-                return null;
+                throw new RuntimeException("There are mistakes in equation");
             }
         }
         return stack.pop();
@@ -169,6 +169,7 @@ public class Equation {
                 System.out.print(expEl);
             }
         }
+        System.out.println();
     }
 
     @Override

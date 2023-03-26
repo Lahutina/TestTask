@@ -14,7 +14,6 @@ public class Commands {
         menuItems.put("Print all equations", new PrintEquations());
         menuItems.put("Find equation with specific roots", new FindByRootsNumbers());
         menuItems.put("Find equation with one root", new FindWithOneRoot());
-        menuItems.put("Add roots to specific equation", new AddRootsToEquation());
         menuItems.put("Exit program", null);
     }
 
@@ -32,7 +31,7 @@ public class Commands {
             if (choice == i) {
                 entry.getValue().execute();
                 return true;
-            } else if (choice == 6)
+            } else if (choice == 5)
                 return false;
             i++;
         }
